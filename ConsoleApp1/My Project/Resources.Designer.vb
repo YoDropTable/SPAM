@@ -39,7 +39,7 @@ Namespace My.Resources
         Friend ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
-                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("SPAM.Resources", GetType(Resources).Assembly)
+                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("ConsoleApp1.Resources", GetType(Resources).Assembly)
                     resourceMan = temp
                 End If
                 Return resourceMan
@@ -61,12 +61,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''  Looks up a localized string similar to 0 612 160
+        '''2 300 984
+        '''0 -1
+        '''3 264 1892
+        '''3 -1
+        '''2 -1.
         '''</summary>
-        Friend ReadOnly Property icons8_open_32() As System.Drawing.Bitmap
+        Friend ReadOnly Property TestFile() As String
             Get
-                Dim obj As Object = ResourceManager.GetObject("icons8-open-32", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
+                Return ResourceManager.GetString("TestFile", resourceCulture)
             End Get
         End Property
     End Module
