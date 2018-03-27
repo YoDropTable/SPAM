@@ -28,7 +28,7 @@ Partial Class Form1
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.instructionPanal = New System.Windows.Forms.FlowLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.NextBTN = New System.Windows.Forms.Button()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.memoryPanal = New System.Windows.Forms.FlowLayoutPanel()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
@@ -42,6 +42,7 @@ Partial Class Form1
         Me.sizeControl = New System.Windows.Forms.NumericUpDown()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.StopBtn = New System.Windows.Forms.Button()
         Me.TableLayoutPanelMain.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -125,23 +126,23 @@ Partial Class Form1
         '
         'Panel1
         '
-        Me.Panel1.Controls.Add(Me.Button1)
+        Me.Panel1.Controls.Add(Me.NextBTN)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel1.Location = New System.Drawing.Point(3, 292)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(300, 24)
         Me.Panel1.TabIndex = 1
         '
-        'Button1
+        'NextBTN
         '
-        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button1.Enabled = False
-        Me.Button1.Location = New System.Drawing.Point(222, 1)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 0
-        Me.Button1.Text = "Next"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.NextBTN.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.NextBTN.Enabled = False
+        Me.NextBTN.Location = New System.Drawing.Point(222, 1)
+        Me.NextBTN.Name = "NextBTN"
+        Me.NextBTN.Size = New System.Drawing.Size(75, 23)
+        Me.NextBTN.TabIndex = 0
+        Me.NextBTN.Text = "Next"
+        Me.NextBTN.UseVisualStyleBackColor = True
         '
         'GroupBox2
         '
@@ -217,6 +218,7 @@ Partial Class Form1
         'Panel2
         '
         Me.TableLayoutPanelMain.SetColumnSpan(Me.Panel2, 3)
+        Me.Panel2.Controls.Add(Me.StopBtn)
         Me.Panel2.Controls.Add(Me.pagesControl)
         Me.Panel2.Controls.Add(Me.sizeControl)
         Me.Panel2.Controls.Add(Me.Label2)
@@ -262,6 +264,15 @@ Partial Class Form1
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Block Size"
         '
+        'StopBtn
+        '
+        Me.StopBtn.Location = New System.Drawing.Point(865, 12)
+        Me.StopBtn.Name = "StopBtn"
+        Me.StopBtn.Size = New System.Drawing.Size(75, 23)
+        Me.StopBtn.TabIndex = 6
+        Me.StopBtn.Text = "STOP!"
+        Me.StopBtn.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -297,7 +308,7 @@ Partial Class Form1
     Friend WithEvents instructionPanal As FlowLayoutPanel
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents Panel1 As Panel
-    Friend WithEvents Button1 As Button
+    Friend WithEvents NextBTN As Button
     Friend WithEvents memoryPanal As FlowLayoutPanel
     Friend WithEvents OpenFileToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Panel2 As Panel
@@ -307,4 +318,5 @@ Partial Class Form1
     Friend WithEvents Label1 As Label
     Friend WithEvents diskPanal As FlowLayoutPanel
     Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents StopBtn As Button
 End Class
