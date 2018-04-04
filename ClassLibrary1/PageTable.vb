@@ -18,10 +18,13 @@ Public Class PageTable
     ''' Page Table Item That holds
     ''' the Process ID and a list of 
     ''' pages in Physical Memory
+    ''' Split into Code and Data 
+    ''' Segements
     ''' </summary>
-    Private Structure PageTableItems
+    Public Structure PageTableItems
         Public ProcessID As Integer
-        Public myPageTable As List(Of Integer)
+        Public myPageTableCode As List(Of Integer)
+        Public myPageTableData As List(Of Integer)
     End Structure
 
     ''' <summary>
@@ -64,9 +67,12 @@ Public Class PageTable
     ''' process id to search for
     ''' <returns>List of physical Memory pages for process</returns>
     Public Function getMemoryAddress(processID As Integer) As List(Of Integer)
+        Dim returnList As New List(Of Integer)
         For Each item In myTable
             If item.ProcessID = processID Then
-                Return item.myPageTable
+                returnList.AddRange(item.myPageTableCode)
+                returnList.AddRange(item.myPageTableData)
+                Return returnList
             End If
         Next
         Throw New ArgumentException("No Process in Memory")
@@ -78,12 +84,15 @@ Public Class PageTable
     ''' </summary>
     ''' <param name="processID"></param>
     ''' value of the process id
-    ''' <param name="listOfPhysicalAddresses"></param>
-    ''' list of physical addressses for the process id
-    Public Sub addProcces(processID As Integer, listOfPhysicalAddresses As List(Of Integer))
+    ''' <param name="listofCodeAddress"></param>
+    ''' list of physical addresses for the code of the process id
+    ''' <param name="listofDataAddress"></param>
+    ''' list of physical addresses for the data of the process id
+    Public Sub addProcces(processID As Integer, listofCodeAddress As List(Of Integer), listofDataAddress As List(Of Integer))
         Dim myItem As New PageTableItems
         myItem.ProcessID = processID
-        myItem.myPageTable = listOfPhysicalAddresses
+        myItem.myPageTableCode = listofCodeAddress
+        myItem.myPageTableData = listofDataAddress
         myTable.Add(myItem)
     End Sub
 
@@ -101,6 +110,20 @@ Public Class PageTable
     End Sub
 
     ''' <summary>
+    ''' Removes the first item inserted into the list
+    ''' To free up memory to move to disk space
+    ''' </summary>
+    ''' <returns>A structre containing ProcessID and Page Count</returns>
+    Public Function freeUpMemory() As PageTableItems
+        If myTable.Count = 0 Then
+            Return Nothing
+        End If
+        Dim returnItem As PageTableItems
+        returnItem = myTable.ElementAt(0)
+        Return returnItem
+    End Function
+
+    ''' <summary>
     ''' Will update the list of process ID with a new list
     ''' of memory addresses
     ''' Do Not Think this will be used unless we are doing
@@ -109,12 +132,17 @@ Public Class PageTable
     ''' </summary>
     ''' <param name="processID"></param>
     ''' Process ID to search for
-    ''' <param name="listOfPhysicalAddreses"></param>
+    ''' <param name="listOfCodePages"></param>
     ''' list of phyiscal addresses that will be udpated to
-    Public Sub updateProcess(processID As Integer, listOfPhysicalAddreses As List(Of Integer))
+    ''' for code
+    '''  <param name="listOfDataPages"></param>
+    '''  list of physical addresses that will be updated 
+    '''  for data
+    Public Sub updateProcess(processID As Integer, listOfCodePages As List(Of Integer), listOfDataPages As List(Of Integer))
         For Each item In myTable
             If item.ProcessID = processID Then
-                item.myPageTable = listOfPhysicalAddreses
+                item.myPageTableCode = listOfCodePages
+                item.myPageTableData = listOfDataPages
             End If
         Next
     End Sub

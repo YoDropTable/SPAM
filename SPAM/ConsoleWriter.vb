@@ -11,7 +11,7 @@
 ''' </summary>
 Public Class ConsoleWriter
     Inherits IO.TextWriter
-    Private textBox As Control
+    Private textBox As TextBox
 
     Public Sub New(paramTextBox As Control)
         Me.textBox = paramTextBox
@@ -24,10 +24,10 @@ Public Class ConsoleWriter
     End Property
 
     Public Overrides Sub Write(value As Char)
-        textBox.Text += value
+        textBox.AppendText(value)
     End Sub
 
     Public Overrides Sub Write(value As String)
-        textBox.Text += value
+        textBox.AppendText(value)
     End Sub
 End Class

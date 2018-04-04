@@ -16,7 +16,8 @@ Public Class SPAM
     Private myMemory As PhysicalMemory
 
     ''Page Table Variable
-    Private tableLkUp As PageTable
+    Private memoryTableLookUP As PageTable
+    Private swapSpace As List(Of PageTable.PageTableItems)
 
     ''' <summary>
     ''' Initiazlies a new run of SPAM
@@ -25,7 +26,8 @@ Public Class SPAM
     ''' </summary>
     Public Sub New()
         myMemory = New PhysicalMemory
-        tableLkUp = New PageTable
+        memoryTableLookUP = New PageTable
+        swapSpace = New List(Of PageTable.PageTableItems)
     End Sub
 
     ''' <summary>
@@ -38,7 +40,8 @@ Public Class SPAM
     ''' number of page files
     Public Sub New(ByVal size As Integer, numOfBlocks As Integer)
         myMemory = New PhysicalMemory(size, numOfBlocks)
-        tableLkUp = New PageTable
+        memoryTableLookUP = New PageTable
+        swapSpace = New List(Of PageTable.PageTableItems)
     End Sub
 
     ''' <summary>
@@ -84,7 +87,6 @@ Public Class SPAM
         Throw New ArgumentException("Bad Command")
     End Sub
 
-
     ''' <summary>
     ''' Frees up memory from the Physical Memory
     ''' Looks at the table lookup
@@ -97,20 +99,26 @@ Public Class SPAM
         ''Writes what we are doing to the console
         Console.WriteLine("Freeing up Memory PID {0}", processID)
         ''Looks up the process id in the look up table
-        If tableLkUp.findProcess(processID) Then
+        If memoryTableLookUP.findProcess(processID) Then
             ''grabs all of its addresses
-            Dim addressesToRemove As List(Of Integer) = tableLkUp.getMemoryAddress(processID)
+            Dim addressesToRemove As List(Of Integer) = memoryTableLookUP.getMemoryAddress(processID)
             ''frees up those addresses
             myMemory.freeMemory(addressesToRemove)
             ''removes it from the look up table
             ''forgot this once it broke
-            tableLkUp.removeProcess(processID)
+            memoryTableLookUP.removeProcess(processID)
+        ElseIf findDiskProcess(processID) Then
+            For Each item In swapSpace.ToList
+                If item.ProcessID = processID Then
+                    Console.WriteLine("Removing from Disk PID {0} ", processID)
+                    swapSpace.Remove(item)
+                End If
+            Next
         Else
             ''If it wasn't in the table something was wrong
             Throw New ArgumentException("Process Not In Memory")
         End If
     End Sub
-
 
     ''' <summary>
     ''' Adds a process to phyiscal memory
@@ -134,15 +142,22 @@ Public Class SPAM
         Dim dataPages As Integer = Math.Ceiling(dataSize / myMemory.getBlockSize)
 
         ''Checks the table and make sure it isn't in there
-        If Not tableLkUp.findProcess(processID) Then
-            ''Check if we have enough memory. Won't need this in the future
-            If (dataPages + codePages) <= myMemory.getFreeBlocks Then
+        If Not memoryTableLookUP.findProcess(processID) Then
+            ''Check if we have enough memory.
+            If (dataPages + codePages) <= myMemory.getPageFileCount Then
                 ''Adds it to free emmeory and gets the addresses we added it to
-                Dim myPageTable As List(Of Integer) = myMemory.AddProcessToMemory(processID, codePages, dataPages)
+                While (dataPages + codePages) > myMemory.getFreeBlocks
+                    Dim swapToDisk As PageTable.PageTableItems = memoryTableLookUP.freeUpMemory
+                    freeUpMemory(swapToDisk.ProcessID)
+                    Console.WriteLine("Moving PID {0} to Disk Space {1} Pages of Code {2} Pages of data", swapToDisk.ProcessID, swapToDisk.myPageTableCode.Count, swapToDisk.myPageTableData.Count)
+                    swapSpace.Add(swapToDisk)
+                End While
+                Dim codePagesList As List(Of Integer) = myMemory.AddProcessCodeToMemory(processID, codePages)
+                Dim dataPagesList As List(Of Integer) = myMemory.AddProcessDataToMemory(processID, dataPages)
                 ''puts them in the look up table
-                tableLkUp.addProcces(processID, myPageTable)
+                memoryTableLookUP.addProcces(processID, codePagesList, dataPagesList)
             Else
-                Throw New ArgumentException("No Free Memory")
+                Throw New ArgumentException("No Enough Total Memory")
             End If
         Else
             Throw New ArgumentException("Process already in memory")
@@ -151,6 +166,20 @@ Public Class SPAM
         Console.WriteLine("PID: {0} arrives: {1} Pages of Code {2} Pages of data", processID, codePages, dataPages)
     End Sub
 
+
+    ''' <summary>
+    ''' Finds the associated process in the disk space
+    ''' </summary>
+    ''' <returns>True or false depnding if it finds the value</returns>
+    Public Function findDiskProcess(processID As Integer) As Boolean
+        For Each item In swapSpace
+            If item.ProcessID = processID Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
+
     ''' <summary>
     ''' Gets a readout of the current memory state to print out to console
     ''' also used in the GUI :) 
@@ -158,5 +187,18 @@ Public Class SPAM
     ''' <returns>a string of all the memory states</returns>
     Public Function getMemoryState() As String
         Return myMemory.ToString
+    End Function
+
+    ''' <summary>
+    ''' Gets a readout of the current memory state to print out to console
+    ''' also used in the GUI :) 
+    ''' </summary>
+    ''' <returns>a string of all the memory states</returns>
+    Public Function getDiskState() As String
+        Dim returnString As String = ""
+        For Each item In swapSpace
+            returnString += String.Format("PID: {0} CodePages: {1} DataPages: {2}", item.ProcessID, item.myPageTableCode.Count, item.myPageTableData.Count) & vbNewLine
+        Next
+        Return returnString
     End Function
 End Class

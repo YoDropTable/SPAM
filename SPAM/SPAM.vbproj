@@ -144,6 +144,8 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <None Include="Resources\icons8-open-32.png" />
+    <Content Include="TestFile3.txt" />
+    <Content Include="TestFile2.txt" />
     <Content Include="TestFile.txt" />
   </ItemGroup>
   <ItemGroup>

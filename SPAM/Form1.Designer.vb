@@ -38,11 +38,11 @@ Partial Class Form1
         Me.OpenFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.StopBtn = New System.Windows.Forms.Button()
         Me.pagesControl = New System.Windows.Forms.NumericUpDown()
         Me.sizeControl = New System.Windows.Forms.NumericUpDown()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.StopBtn = New System.Windows.Forms.Button()
         Me.TableLayoutPanelMain.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -86,6 +86,7 @@ Partial Class Form1
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ReadOnly = True
+        Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both
         Me.TextBox1.Size = New System.Drawing.Size(949, 109)
         Me.TextBox1.TabIndex = 0
         '
@@ -229,6 +230,15 @@ Partial Class Form1
         Me.Panel2.Size = New System.Drawing.Size(949, 44)
         Me.Panel2.TabIndex = 5
         '
+        'StopBtn
+        '
+        Me.StopBtn.Location = New System.Drawing.Point(865, 12)
+        Me.StopBtn.Name = "StopBtn"
+        Me.StopBtn.Size = New System.Drawing.Size(75, 23)
+        Me.StopBtn.TabIndex = 6
+        Me.StopBtn.Text = "STOP!"
+        Me.StopBtn.UseVisualStyleBackColor = True
+        '
         'pagesControl
         '
         Me.pagesControl.Location = New System.Drawing.Point(270, 12)
@@ -263,15 +273,6 @@ Partial Class Form1
         Me.Label1.Size = New System.Drawing.Size(57, 13)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Block Size"
-        '
-        'StopBtn
-        '
-        Me.StopBtn.Location = New System.Drawing.Point(865, 12)
-        Me.StopBtn.Name = "StopBtn"
-        Me.StopBtn.Size = New System.Drawing.Size(75, 23)
-        Me.StopBtn.TabIndex = 6
-        Me.StopBtn.Text = "STOP!"
-        Me.StopBtn.UseVisualStyleBackColor = True
         '
         'Form1
         '

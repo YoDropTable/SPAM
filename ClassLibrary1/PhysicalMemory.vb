@@ -65,18 +65,11 @@ Public Class PhysicalMemory
     ''' <param name="processID"></param>
     ''' Process ID for the program
     ''' <param name="codePages"></param>
-    ''' number of code Pages
-    ''' <param name="datapages"></param>
     ''' number of Data Pages 
     ''' <returns>List of Integers used to put it inside the look up table</returns>
-    Public Function AddProcessToMemory(processID As Integer, codePages As Integer, datapages As Integer) As List(Of Integer)
+    Public Function AddProcessCodeToMemory(processID As Integer, codePages As Integer) As List(Of Integer)
         ''Creates return list
         Dim returnMemoryPages As New List(Of Integer)
-
-        ''Checks if there is enough free memory
-        If (codePages + datapages) > freePageList.Count Then
-            Throw New ArgumentOutOfRangeException("Not Enough Memory")
-        End If
 
         ''Allocates Code Pages First
         For count = 0 To codePages - 1
@@ -84,6 +77,28 @@ Public Class PhysicalMemory
             pageFiles.Item(page) = String.Format("Code-{1} of P{0}", processID, count)
             returnMemoryPages.Add(page)
         Next
+
+        ''Returns Value
+        Return returnMemoryPages
+    End Function
+
+    ''' <summary>
+    ''' Adds Process to Memory
+    ''' So you give it the process ID and number
+    ''' of pages and it will put it into memory
+    ''' If there isn't enough space this will cause 
+    ''' an error or falut
+    ''' this will be used to enabel Disk Access at a
+    ''' later date
+    ''' </summary>
+    ''' <param name="processID"></param>
+    ''' Process ID for the program
+    ''' <param name="datapages"></param>
+    ''' number of Data Pages 
+    ''' <returns>List of Integers used to put it inside the look up table</returns>
+    Public Function AddProcessDataToMemory(processID As Integer, datapages As Integer) As List(Of Integer)
+        ''Creates return list
+        Dim returnMemoryPages As New List(Of Integer)
 
         ''Now Allocate Data Pages
         For count = 0 To datapages - 1

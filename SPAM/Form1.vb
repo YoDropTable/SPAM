@@ -189,6 +189,17 @@ Public Class Form1
             End With
             memoryPanal.Controls.Add(label)
         Next
+        Dim splitStringDisk() As String = myProgram.getDiskState.Split(Environment.NewLine)
+        diskPanal.Controls.Clear()
+        For Each diskItem In splitStringDisk
+            Dim label As New Label
+            With label
+                .Text = diskItem
+                .AutoSize = True
+                .Padding = New Padding(5, 3, 5, 3)
+            End With
+            diskPanal.Controls.Add(label)
+        Next
     End Sub
 
     ''' <summary>
